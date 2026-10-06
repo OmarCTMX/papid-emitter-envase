@@ -1,0 +1,91 @@
+### API del emitter — pruebas
+#
+# Requiere la extensión "REST Client" de VS Code (Huachao Mao).
+# Da clic en "Send Request" arriba de cada petición.
+#
+# OJO: estas llamadas asignan y desasignan personal DE VERDAD. Antes de usarlas,
+# revisa a qué NATS está conectado el emitter (lo dice en su log al arrancar):
+#   [emitter] Conectado a NATS en nats://...
+# Si dice 192.168.90.156 es PRODUCCIÓN.
+
+@host = http://localhost:3200
+@maquina = a2i-1-r
+@empleado = V0912
+
+
+### 1. Consultar TODAS las máquinas con personal
+GET {{host}}/api/personal
+
+
+### 2. Consultar UNA máquina
+GET {{host}}/api/personal/{{maquina}}
+
+
+### 3. Asignar personal (3 trabajadores)
+POST {{host}}/api/personal/{{maquina}}
+Content-Type: application/json
+
+{
+  "machine_id": "12",
+  "order_details": {
+    "doc_num": "954354",
+    "product_name": "COT. Pegaduro Sobre Piso Blanco 10 kg",
+    "quantity": "113",
+    "units": "Bts",
+    "status": "Cerrada",
+    "lotes_actuales": "0",
+    "lotes_totales": "1"
+  },
+  "personal": [
+    { "employee_id": "V000",  "nombre": "Omar Ramirez",   "rol": "Revolturero", "nfc_tag": "AB:13:08:1A" },
+    { "employee_id": "V0912", "nombre": "Michel Davalos", "rol": "Revolturero", "nfc_tag": "44:38:DB:A9" },
+    { "employee_id": "V1012", "nombre": "Jesus Ruiz",     "rol": "Montacargas", "nfc_tag": "10:F6:47:3B" }
+  ]
+}
+
+
+### 4. Asignar FORZADO (todos entran en verde, sin pasar tarjeta)
+POST {{host}}/api/personal/{{maquina}}
+Content-Type: application/json
+
+{
+  "machine_id": "12",
+  "forzado": true,
+  "personal": [
+    { "employee_id": "V000", "nombre": "Omar Ramirez", "rol": "Revolturero", "nfc_tag": "AB:13:08:1A" }
+  ]
+}
+
+
+### 5. Desasignar a UNA persona
+DELETE {{host}}/api/personal/{{maquina}}/{{empleado}}
+
+
+### 6. Desasignar la máquina COMPLETA
+DELETE {{host}}/api/personal/{{maquina}}
+
+
+# ─────────────────────────────────────────────────────────
+#  Casos de error (para verificar que responde bien)
+# ─────────────────────────────────────────────────────────
+
+### 7. Máquina sin personal → 404
+GET {{host}}/api/personal/envasadora-99
+
+
+### 8. Empleado que no existe → 404
+DELETE {{host}}/api/personal/{{maquina}}/NOEXISTE
+
+
+### 9. Asignar con la lista vacía → 400
+POST {{host}}/api/personal/{{maquina}}
+Content-Type: application/json
+
+{ "personal": [] }
+
+
+### 10. JSON mal formado → 400
+POST {{host}}/api/personal/{{maquina}}
+Content-Type: application/json
+
+{ "personal": [ }

@@ -1,0 +1,15 @@
+services:
+  emitter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: papid-envasadoras-emitter:local
+    env_file:
+      - .env
+    environment:
+      TZ: America/Mexico_City
+    restart: unless-stopped
+    ports:
+      - "3200:3200"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

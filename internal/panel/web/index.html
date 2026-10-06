@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor del Emitter</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+
+<body>
+    <h1>Monitor del Emitter · KV: papid_personal_asignado</h1>
+    <p class="sub">Estado de las máquinas y simulación de eventos · se actualiza solo cada 2s</p>
+    <div class="cfg" id="cfg"></div>
+
+    <h2>Máquinas registradas (desde el KV)</h2>
+    <div class="grid" id="maquinas"></div>
+
+    <h2>Órdenes por máquina</h2>
+    <p class="sub">
+        <code>order_details</code> completo de cada sub-máquina, tal como llega en
+        <code>papid.admin.signed</code>. El personal se comparte entre las sub-máquinas
+        de un grupo; la orden es de cada una.
+    </p>
+    <div id="ordenes"></div>
+
+    <h2>Simular tarjeta · personal de esta máquina</h2>
+    <p class="sub">
+        Publica <code>papid.personal.login</code> / <code>logout</code> con el tag real de cada persona.
+    </p>
+    <table id="tabla-personal">
+        <thead>
+            <tr>
+                <th>Empleado</th>
+                <th>Rol</th>
+                <th>Estado</th>
+                <th>Tag</th>
+                <th>Lector</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <h2>Simular asignación</h2>
+    <div class="caja">
+        <div class="fila">
+            <label style="flex:1 1 180px">Máquina
+                <input id="sg-maquina" placeholder="a2i-1-r">
+            </label>
+            <label style="flex:0 0 110px">machine_id
+                <input id="sg-id" value="4">
+            </label>
+        </div>
+        <p class="sub" style="margin-top:8px">
+            La orden no se toca desde aquí: un signed simulado conserva la que ya tenía
+            la máquina. Para mandar una orden distinta usa <code>api.http</code>.
+        </p>
+        <table style="margin-top:12px">
+            <thead>
+                <tr>
+                    <th>employee_id</th>
+                    <th>Nombre</th>
+                    <th>Rol</th>
+                    <th>nfc_tag</th>
+                </tr>
+            </thead>
+            <tbody id="sg-personal"></tbody>
+        </table>
+        <div class="fila">
+            <button class="n" onclick="simularSigned('signed')">Asignar (signed)</button>
+            <button class="v" onclick="simularSigned('forced')">Asignar forzado (todos verdes)</button>
+            <button class="r" onclick="simularUnsigned()">Desasignar (unsigned)</button>
+            <button class="n" onclick="simularQuitarOrden()">Quitar orden</button>
+        </div>
+        <p class="sub" style="margin-top:8px">
+            <b>Quitar orden</b> manda un signed con el personal actual y la orden vacía:
+            deja la máquina con gente pero sin orden. Es el único camino para ese estado,
+            porque un unsigned borra las dos cosas.
+        </p>
+    </div>
+
+    <h2>Simular tarjeta suelta (intruso)</h2>
+    <div class="caja">
+        <div class="fila">
+            <label style="flex:1 1 200px">Tag
+                <input id="lb-tag" placeholder="FF:FF:FF:FF">
+            </label>
+            <label style="flex:0 0 120px">Lector
+                <select id="lb-puerto">
+                    <option>3-1</option>
+                    <option>3-3</option>
+                    <option>3-4</option>
+                </select>
+            </label>
+            <button class="v" onclick="simularSuelto('login')">Poner tarjeta</button>
+            <button class="n" onclick="simularSuelto('logout')">Quitar tarjeta</button>
+        </div>
+        <p class="sub" style="margin-top:8px">
+            Un tag no asignado debe producir <code>papid.personal.denied</code> (lector en rojo).
+        </p>
+    </div>
+
+    <div id="aviso"></div>
+
+    <script src="/static/app.js"></script>
+</body>
+
+</html>

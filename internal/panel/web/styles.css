@@ -1,0 +1,445 @@
+/* ============================================================
+   Monitor del Emitter — estilos
+   ============================================================ */
+
+:root {
+    --bg: #f3efe6;
+    --card: #fff;
+    --ink: #161412;
+    --muted: #7a736a;
+    --naranja: #ee8935;
+    --verde: #4caf50;
+    --rojo: #f44336;
+    --borde: #d8d3c8;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: var(--bg);
+    color: var(--ink);
+    padding: 20px 24px 60px;
+    font-family: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+
+h1 {
+    font-size: 1.5rem;
+    margin-bottom: 2px;
+}
+
+h2 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 26px 0 10px;
+    color: var(--muted);
+}
+
+.sub {
+    color: var(--muted);
+    font-size: .85rem;
+    margin-bottom: 6px;
+}
+
+/* ---------- Configuración del emitter ---------- */
+.cfg {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    font-size: .8rem;
+    background: var(--card);
+    border: 2px solid var(--ink);
+    padding: 10px 14px;
+}
+
+.cfg b {
+    color: var(--naranja);
+}
+
+/* ---------- Tarjetas de máquinas ---------- */
+.grid {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+}
+
+.maq {
+    background: var(--card);
+    border: 2px solid var(--ink);
+    padding: 12px 14px;
+}
+
+.maq h3 {
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Nombre legible que manda papid.admin.asignacion, debajo del código. */
+.maq-nombre {
+    font-size: .8rem;
+    color: var(--naranja);
+    margin-top: 1px;
+}
+
+.maq .meta {
+    font-size: .7rem;
+    color: var(--muted);
+    margin: 2px 0 8px;
+}
+
+.persona {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 0;
+    border-top: 1px solid var(--borde);
+    font-size: .8rem;
+}
+
+.nom {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ---------- Orden de la máquina ---------- */
+/* Va al pie de la tarjeta, separada del personal con una línea gruesa:
+   el personal se comparte entre sub-máquinas, la orden no. */
+.orden {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 2px solid var(--ink);
+}
+
+.orden.vacia {
+    color: var(--muted);
+    font-size: .7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.orden-cab,
+.orden-cifras {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.orden-cifras {
+    margin-top: 6px;
+}
+
+.orden-tit {
+    font-size: .68rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+}
+
+/* Nombre del producto: el dato que el operador busca primero. */
+.orden-prod {
+    font-size: .85rem;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-top: 3px;
+}
+
+/* Cantidad, unidades e id, separados con puntos medios. */
+.orden-datos {
+    font-size: .72rem;
+    color: var(--muted);
+    margin-top: 2px;
+}
+
+/* El status de la ORDEN (Cerrada, Abierta), no el del personal: por eso no
+   reusa los colores verde/naranja de los badges de estado. */
+.badge.orden-estado {
+    color: var(--ink);
+    border-color: var(--ink);
+    background: var(--bg);
+}
+
+.orden-lotes {
+    font-size: .8rem;
+    color: var(--muted);
+}
+
+.orden-lotes b {
+    font-size: 1.05rem;
+    color: var(--ink);
+}
+
+.orden-barra {
+    height: 8px;
+    margin-top: 5px;
+    background: var(--bg);
+    border: 1px solid var(--borde);
+}
+
+.orden-barra span {
+    display: block;
+    height: 100%;
+    background: var(--naranja);
+}
+
+/* ============================================================
+   Órdenes por máquina (sección a todo el ancho)
+   ------------------------------------------------------------
+   El bloque .orden de la tarjeta es un resumen apretado.
+   Aquí hay espacio de sobra, así que se muestran TODOS los
+   campos de order_details sin recortar nada.
+   ============================================================ */
+.ord {
+    background: var(--card);
+    border: 2px solid var(--ink);
+    padding: 12px 14px;
+    margin-bottom: 12px;
+}
+
+.ord.vacia {
+    border-color: var(--borde);
+}
+
+.ord-cab {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* El código de máquina manda: es lo que se busca al recorrer la lista. */
+.ord-maq {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.ord-folio {
+    font-size: .7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-right: auto;
+}
+
+.ord-prod {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 8px 0 10px;
+    line-height: 1.3;
+}
+
+/* Rejilla que se reacomoda sola: en pantalla ancha caen todos los datos en
+   un renglón, en angosta se parten sin descuadrarse. */
+.ord-datos {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    margin-bottom: 10px;
+}
+
+.ord-dato {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+    border-left: 2px solid var(--borde);
+    padding-left: 8px;
+}
+
+.ord-et {
+    font-size: .62rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+}
+
+.ord-val {
+    font-size: .9rem;
+    font-weight: 700;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ---------- Badges de estado ---------- */
+.badge {
+    font-size: .65rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border: 1px solid;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.Activo {
+    color: #fff;
+    background: var(--verde);
+    border-color: var(--verde);
+}
+
+.Inactivo {
+    color: var(--muted);
+    border-color: var(--muted);
+}
+
+.Asignado {
+    color: var(--naranja);
+    border-color: var(--naranja);
+}
+
+.puerto {
+    font-size: .65rem;
+    color: var(--muted);
+}
+
+.vacio {
+    color: var(--muted);
+    font-size: .8rem;
+    padding: 8px 0;
+}
+
+/* ---------- Tablas ---------- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card);
+    border: 2px solid var(--ink);
+    font-size: .8rem;
+}
+
+th,
+td {
+    padding: 7px 9px;
+    text-align: left;
+    border-bottom: 1px solid var(--borde);
+}
+
+th {
+    background: var(--bg);
+    text-transform: uppercase;
+    font-size: .68rem;
+    letter-spacing: 1px;
+}
+
+/* ---------- Formularios ---------- */
+input,
+select {
+    font-family: inherit;
+    font-size: .8rem;
+    padding: 5px 7px;
+    border: 1px solid var(--ink);
+    background: #fff;
+    width: 100%;
+}
+
+/* Nombre + dropdown del directorio (KV PAPID_PERSONAL) en la misma celda.
+   El input manda: el select es un atajo estrecho pegado a la derecha. */
+.celda-nombre {
+    display: flex;
+    gap: 4px;
+    align-items: stretch;
+}
+
+.celda-nombre select.dd-nombre {
+    width: auto;
+    flex: 0 0 130px;
+    font-size: .75rem;
+    cursor: pointer;
+    color: var(--muted);
+    border-color: var(--borde);
+}
+
+button {
+    font-family: inherit;
+    font-size: .75rem;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 6px 11px;
+    border: 2px solid var(--ink);
+    background: #fff;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+button:hover {
+    background: var(--ink);
+    color: var(--bg);
+}
+
+/* Variantes de color: v=verde, n=naranja, r=rojo */
+button.v {
+    border-color: var(--verde);
+    color: var(--verde);
+}
+
+button.v:hover {
+    background: var(--verde);
+    color: #fff;
+}
+
+button.n {
+    border-color: var(--naranja);
+    color: var(--naranja);
+}
+
+button.n:hover {
+    background: var(--naranja);
+    color: #fff;
+}
+
+button.r {
+    border-color: var(--rojo);
+    color: var(--rojo);
+}
+
+button.r:hover {
+    background: var(--rojo);
+    color: #fff;
+}
+
+.fila {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.fila > * {
+    flex: 0 0 auto;
+}
+
+.caja {
+    background: var(--card);
+    border: 2px solid var(--ink);
+    padding: 14px;
+}
+
+/* ---------- Aviso flotante ---------- */
+#aviso {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    padding: 11px 16px;
+    border: 2px solid var(--ink);
+    background: var(--verde);
+    color: #fff;
+    font-size: .8rem;
+    font-weight: 700;
+    display: none;
+    max-width: 60vw;
+}
+
+#aviso.err {
+    background: var(--rojo);
+}
